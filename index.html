@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon Clicker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <!-- Верхняя панель пользователя -->
+    <div class="user-panel">
+        <span id="username">Загрузка...</span>
+    </div>
+
+    <!-- ЭКРАН ИГРЫ -->
+    <div id="game-screen" class="screen active-screen">
+        <div class="score-container">
+            <div class="score-title">БАЛАНС</div>
+            <div class="score-value"><span id="score">0</span> <span class="coin-icon">💰</span></div>
+        </div>
+
+        <div class="click-area">
+            <button id="click-btn" class="neon-trigger">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="url(#neon-grad)" stroke="#fff" stroke-width="1" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="neon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#8a2be2" />
+                            <stop offset="100%" stop-color="#00ffff" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН МАГАЗИНА -->
+    <div id="shop-screen" class="screen">
+        <h2 class="screen-title">МОДЕРНИЗАЦИЯ</h2>
+        <div class="shop-card">
+            <div class="card-info">
+                <h3>Мультипликатор клика</h3>
+                <p id="click-level-desc">Уровень: 1 (+1 за клик)</p>
+            </div>
+            <button id="buy-click-btn" class="premium-btn">100 💰</button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН ЛИДЕРБОРДА -->
+    <div id="leaderboard-screen" class="screen">
+        <h2 class="screen-title">РЕЙТИНГ ИГРОКОВ</h2>
+        <div id="leaders-list" class="leaders-container">
+            <!-- Сюдаapp.js вставит лидеров -->
+        </div>
+    </div>
+
+    <!-- Нижнее меню навигации -->
+    <nav class="bottom-nav">
+        <div id="nav-game" class="nav-item active">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-text">Игра</span>
+        </div>
+        <div id="nav-shop" class="nav-item">
+            <span class="nav-icon">💎</span>
+            <span class="nav-text">Магазин</span>
+        </div>
+        <div id="nav-leaderboard" class="nav-item">
+            <span class="nav-icon">🏆</span>
+            <span class="nav-text">Топ</span>
+        </div>
+    </nav>
+
+    <script src="app.js"></script>
+</body>
+</html>
