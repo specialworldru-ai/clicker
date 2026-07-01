@@ -5,11 +5,11 @@ import threading
 from aiogram import Bot, Dispatcher, types, Router
 from aiogram.filters import Command
 from aiogram.types import WebAppInfo, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
 # --- НАСТРОЙКИ ---
-TOKEN = "8690472693:AAFq-_CTTu6Jk0MwVzt1yeBAtZ_gBRvOupc"  # <--- Вставь сюда свой полный токен!
+TOKEN = "8690472693:AAFq-_CTTu6Jk0MwVzt1yeBAtZ_gBRvOupc"  # <--- Твой токен остается здесь!
 WEB_APP_URL = "https://specialworldru-ai.github.io/clicker/?v=500"
 
 # Создаем бота без прокси, так как на Render он не нужен
@@ -34,6 +34,16 @@ def save_db(data):
 app = Flask(__name__)
 CORS(app)
 
+# --- РОУТЫ ДЛЯ ОТДАЧИ ФАЙЛОВ ИГРЫ (ИСПРАВЛЕНИЕ ОШИБКИ 404) ---
+@app.route('/')
+def serve_index():
+    return send_from_directory('.', 'index.html')
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    return send_from_directory('.', filename)
+
+# --- АПИ ДЛЯ ИГРЫ ---
 @app.route('/get_balance', methods=['GET'])
 def get_balance():
     user_id = request.args.get('user_id')
@@ -146,7 +156,7 @@ async def send_update_notification():
     text = (
         "🔥 **ВЫШЛО ОБНОВЛЕНИЕ!** 🔥\n\n"
         "Что нового:\n"
-        "✨ Добавили Лидерборд!\n"
+        "✨ Изменили дизайн!\n"
         "⚡ Исправили баги!\n\n"
         "Скорее заходи и проверяй обновленного кликера 👇"
     )
