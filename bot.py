@@ -31,8 +31,14 @@ def save_db(data):
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 # --- МИНИ-СЕРВЕР ДЛЯ ПРИЕМА КЛИКОВ ИЗ ИГРЫ (FLASK) ---
-app = Flask(__name__)
+# Явно говорим Flask, что корень проекта — это папка со статикой
+app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
+
+# Теперь нужен всего ОДИН роут для главной страницы, остальное Flask отдаст сам!
+@app.route('/')
+def serve_index():
+    return app.send_static_file('index.html')
 
 # --- РОУТЫ ДЛЯ ОТДАЧИ ФАЙЛОВ ИГРЫ (АБСОЛЮТНЫЕ ПУТИ) ---
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
