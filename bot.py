@@ -34,23 +34,23 @@ def save_db(data):
 app = Flask(__name__)
 CORS(app)
 
-# --- РОУТЫ ДЛЯ ОТДАЧИ ФАЙЛОВ ИГРЫ (УМНЫЙ ПОИСК) ---
+# --- РОУТЫ ДЛЯ ОТДАЧИ ФАЙЛОВ ИГРЫ (АБСОЛЮТНЫЕ ПУТИ) ---
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @app.route('/')
 def serve_index():
-    # Проверяем, лежит ли index.html в текущей папке или на шаг выше
-    if os.path.exists('index.html'):
-        return send_from_directory('.', 'index.html')
-    elif os.path.exists('../index.html'):
-        return send_from_directory('..', 'index.html')
-    return "Файл index.html не найден ни в корне, ни в src!", 404
+    # Если запустили из папки src, то index.html лежит на уровень выше
+    parent_dir = os.path.dirname(BASE_DIR)
+    if os.path.exists(os.path.join(parent_dir, 'index.html')):
+        return send_from_directory(parent_dir, 'index.html')
+    return send_from_directory(BASE_DIR, 'index.html')
 
 @app.route('/<path:filename>')
 def serve_static(filename):
-    if os.path.exists(filename):
-        return send_from_directory('.', filename)
-    elif os.path.exists(f'../{filename}'):
-        return send_from_directory('..', filename)
-    return f"Файл {filename} не найден!", 404
+    parent_dir = os.path.dirname(BASE_DIR)
+    if os.path.exists(os.path.join(parent_dir, filename)):
+        return send_from_directory(parent_dir, filename)
+    return send_from_directory(BASE_DIR, filename)
 
 # --- АПИ ДЛЯ ИГРЫ ---
 @app.route('/get_balance', methods=['GET'])
