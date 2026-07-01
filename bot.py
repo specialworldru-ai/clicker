@@ -34,14 +34,23 @@ def save_db(data):
 app = Flask(__name__)
 CORS(app)
 
-# --- РОУТЫ ДЛЯ ОТДАЧИ ФАЙЛОВ ИГРЫ (ИСПРАВЛЕНИЕ ОШИБКИ 404) ---
+# --- РОУТЫ ДЛЯ ОТДАЧИ ФАЙЛОВ ИГРЫ (УМНЫЙ ПОИСК) ---
 @app.route('/')
 def serve_index():
-    return send_from_directory('.', 'index.html')
+    # Проверяем, лежит ли index.html в текущей папке или на шаг выше
+    if os.path.exists('index.html'):
+        return send_from_directory('.', 'index.html')
+    elif os.path.exists('../index.html'):
+        return send_from_directory('..', 'index.html')
+    return "Файл index.html не найден ни в корне, ни в src!", 404
 
 @app.route('/<path:filename>')
 def serve_static(filename):
-    return send_from_directory('.', filename)
+    if os.path.exists(filename):
+        return send_from_directory('.', filename)
+    elif os.path.exists(f'../{filename}'):
+        return send_from_directory('..', filename)
+    return f"Файл {filename} не найден!", 404
 
 # --- АПИ ДЛЯ ИГРЫ ---
 @app.route('/get_balance', methods=['GET'])
@@ -121,7 +130,7 @@ def run_flask():
 # --- КОМАНДА /START ДЛЯ БОТА ---
 @router.message(Command("start"))
 async def start_cmd(message: types.Message):
-    btn = KeyboardButton(text="🚀 Играть в Neon Clicker", web_app=WebAppInfo(url=WEB_APP_URL))
+    btn = KeyboardButton(text="🚀 Играть в Хамстера", web_app=WebAppInfo(url=WEB_APP_URL))
     markup = ReplyKeyboardMarkup(keyboard=[[btn]], resize_keyboard=True)
     
     db = load_db()
@@ -150,7 +159,7 @@ async def send_update_notification():
 
     print(f"Начинаем рассылку обновления для {len(db)} пользователей...")
     
-    btn = InlineKeyboardButton(text="🚀 Открыть Neon Clicker", web_app=WebAppInfo(url=WEB_APP_URL))
+    btn = InlineKeyboardButton(text="🚀 Открыть своего Хамстера", web_app=WebAppInfo(url=WEB_APP_URL))
     markup = InlineKeyboardMarkup(inline_keyboard=[[btn]])
 
     text = (

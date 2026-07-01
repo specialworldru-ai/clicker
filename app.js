@@ -27,7 +27,7 @@ let clickLevel = 1;
 let clickPower = 1;
 let upgradeCost = 100;
 
-const BACKEND_URL = "https://neon-clicker-backend.onrender.com";
+const BACKEND_URL = "https://clicker-k0ua.onrender.com";
 
 if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
     const user = tg.initDataUnsafe.user;
